@@ -54,30 +54,17 @@ router.post('/login', (req, res, next) => {
 
             // Điều hướng theo vai trò
             if (user.role === 'admin') {
-                return res.redirect('/dashboard/admin');
+                return res.redirect('/userpage/admin');
             } else if (user.role === 'tutor') {
-                return res.redirect('/dashboard/tutor');
+                return res.redirect('/userpage/tutor');
             } else if (user.role === 'student') {
-                return res.redirect('/dashboard/student');
+                return res.redirect('/userpage/student');
             } else {
                 req.flash('error', 'Vai trò không xác định!');
                 return res.redirect('/auth/login');
             }
         });
     })(req, res, next);
-});
-
-// Hiển thị dashboard theo vai trò
-router.get('/dashboard/admin', checkRole('admin'), (req, res) => {
-    res.render('dashboard/admin', { user: req.user });
-});
-
-router.get('/dashboard/tutor', checkRole('tutor'), (req, res) => {
-    res.render('dashboard/tutor', { user: req.user });
-});
-
-router.get('/dashboard/student', checkRole('student'), (req, res) => {
-    res.render('dashboard/student', { user: req.user });
 });
 
 // Xử lý đăng xuất

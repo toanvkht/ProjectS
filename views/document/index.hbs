@@ -15,7 +15,7 @@
             <th>Tên tài liệu</th>
             <th>Người đăng</th>
             <th>Nội dung</th>
-            <th>File</th>
+            <th>Ảnh</th>
             <th>Thao tác</th>
         </tr>
     </thead>
@@ -25,7 +25,7 @@
             <td>{{this.title}}</td>
             <td>{{this.author}}</td>
             <td>{{this.content}}</td>
-            <td><a href="/uploads/{{this.file}}" target="_blank">Tải về</a></td>
+            <td><img src="{{this.imageUrl}}" alt="{{this.title}}" style="max-width: 100px;"></td>
             <td><a href="#" class="btn btn-sm btn-primary">Xem</a></td>
         </tr>
         {{/each}}

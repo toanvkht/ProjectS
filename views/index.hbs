@@ -1,66 +1,79 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang Chủ</title>
-    <link rel="stylesheet" href="/style.css">
-<style>
-    body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    text-align: center;
-}
-
-.container {
-    max-width: 500px;
-    margin: 50px auto;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-    color: #333;
-}
-
-p {
-    color: #666;
-}
-
-.menu {
-    margin-top: 20px;
-}
-
-.button {
-    display: block;
-    width: 100%;
-    margin: 10px 0;
-    padding: 12px;
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-}
-
-.button:hover {
-    background-color: #0056b3;
-}
-</style>
+    <title>{{title}}</title>
+    
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Chào mừng bạn đến với eTutoring</h1>
-        <p>Chọn một trong các chức năng bên dưới:</p>
 
-        <div class="menu">
-            <a href="/auth/login" class="button">Đăng Nhập</a>
-            <a href="/dashboard/student" class="button">Dashboard</a>
-            <a href="/document" class="button">Quản Lý Tài Liệu</a>
-            <a href="/appointment" class="button">Đặt Lịch Hẹn</a>
-            <a href="/message/" class="button">Nhắn Tin Nội Bộ</a>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">📚 eTutoring</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/blog">🏠 Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/auth/login">🔑 Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/document">📝 Documents</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5">
+        <div class="text-center">
+            <h1 class="fw-bold text-primary">📄 Welcome to Our Document Library</h1>
+            <p class="text-muted">Browse and manage your documents easily</p>
+        </div>
+
+        <!-- Documents Table -->
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-primary text-white text-center">
+                <h4>📚 List of Documents</h4>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover table-bordered">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Tên tài liệu</th>
+                            <th>Người đăng</th>
+                            <th>Nội dung</th>
+                            <th>Ảnh</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each documents}}
+                        <tr>
+                            <td>{{this.title}}</td>
+                            <td>{{this.author}}</td>
+                            <td>{{this.content}}</td>
+                            <td><img src="{{this.imageUrl}}" alt="{{this.title}}" style="max-width: 100px;"></td>
+                            <td><a href="#" class="btn btn-sm btn-primary">Xem</a></td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white text-center py-3 mt-5">
+        <p class="mb-0">&copy; 2025 Document Hub | All Rights Reserved</p>
+    </footer>
+
 </body>
 </html>

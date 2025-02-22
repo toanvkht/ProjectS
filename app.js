@@ -16,14 +16,13 @@ var appointmentRoutes = require('./routes/appointment');
 var documentRoutes = require('./routes/document');
 var blogRoutes = require('./routes/blog');
 var dashboardRoutes = require('./routes/dashboard');
+var userpageRoutes = require('./routes/userpage'); // Thêm dòng này
 
 var app = express();
 
 // Thiết lập view engine (HBS)
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/uploads', express.static('uploads')); // Thêm dòng này để phục vụ các tệp tin tĩnh trong thư mục uploads
 
 // Các middleware cơ bản
 app.use(logger('dev'));
@@ -31,7 +30,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/uploads', express.static('uploads')); // Thêm dòng này để phục vụ các tệp tin tĩnh trong thư mục uploads
 
 // Cấu hình session (nên đặt trước khi khởi tạo Passport)
 app.use(session({
@@ -70,6 +68,7 @@ app.use('/appointment', appointmentRoutes);
 app.use('/document', documentRoutes); // Đảm bảo rằng bạn đã thêm dòng này
 app.use('/blog', blogRoutes);
 app.use('/dashboard', dashboardRoutes);
+app.use('/userpage', userpageRoutes); // Thêm dòng này
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
