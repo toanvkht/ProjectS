@@ -45,7 +45,7 @@ app.use(passport.session());
 
 // Kết nối MongoDB (không thay đổi đoạn code này)
 var mongoose = require('mongoose');
-var uri = "mongodb+srv://khoihvtgch210919@pft.edu.vn:12345678@cluster0.zbmtc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+var uri = "mongodb+srv://TestProject123456:123@cluster0.zbmtc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 mongoose.set('strictQuery', true);
 mongoose.connect(uri, {
   useNewUrlParser: true,

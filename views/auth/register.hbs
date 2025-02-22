@@ -5,6 +5,9 @@
         <div class="card">
             <div class="card-header bg-success text-white">Đăng ký</div>
             <div class="card-body">
+                {{#if message}}
+                    <div class="alert alert-info">{{message}}</div>
+                {{/if}}
                 <form action="/auth/register" method="POST">
                     <div class="mb-3">
                         <label class="form-label">Họ và tên</label>

@@ -1,59 +1,63 @@
-var express = require('express');
-var router = express.Router();
-var bcrypt = require('bcryptjs');
-var passport = require('passport');
-var User = require('../models/Users');
-
-// Hiển thị form đăng ký
-router.get('/register', (req, res) => {
-  res.render('auth/register');
-});
+const express = require('express');
+const router = express.Router();
+const bcrypt = require('bcrypt');
+const passport = require('passport');
+const User = require('../models/Users');
 
 // Xử lý đăng ký
 router.post('/register', async (req, res) => {
-  var { username, password, password2, role } = req.body;
-  let errors = [];
-  if (!username || !password || !password2 || !role) {
-    errors.push({ msg: 'Vui lòng điền đầy đủ thông tin' });
-  }
-  if (password !== password2) {
-    errors.push({ msg: 'Mật khẩu không khớp' });
-  }
-  if (errors.length > 0) {
-    return res.render('auth/register', { errors, username, role });
-  }
-  var existing = await User.findOne({ username });
-  if (existing) {
-    errors.push({ msg: 'Username đã tồn tại' });
-    return res.render('auth/register', { errors, username, role });
-  }
-  var newUser = new User({ username, password, role });
-  bcrypt.genSalt(10, (err, salt) => {
-    bcrypt.hash(newUser.password, salt, async (err, hash) => {
-      if (err) throw err;
-      newUser.password = hash;
-      await newUser.save();
-      res.redirect('/auth/login');
-    });
-  });
-});
+    const { fullname, email, password } = req.body;
 
-// Hiển thị form đăng nhập
-router.get('/login', (req, res) => {
-  res.render('auth/login');
+    try {
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.render('/auth/register', { message: 'Email đã được sử dụng!' });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = new User({ fullname, email, password: hashedPassword });
+
+        await newUser.save();
+        res.redirect('/auth/login?message=Đăng ký thành công! Vui lòng đăng nhập.');
+    } catch (err) {
+        console.error(err);
+        res.render('/auth/register', { message: 'Đã xảy ra lỗi, vui lòng thử lại!' });
+    }
 });
 
 // Xử lý đăng nhập
-router.post('/login', (req, res, next) => {
-  passport.authenticate('local', {
+router.post('/login', passport.authenticate('local', {
     successRedirect: '/dashboard',
-    failureRedirect: '/auth/login'
-  })(req, res, next);
+    failureRedirect: '/auth/login',
+    failureFlash: true
+}));
+
+// Hiển thị trang đăng nhập với thông báo
+router.get('/login', (req, res) => {
+    res.render('auth/login', { message: req.query.message || '' });
 });
 
-// Logout
+// Hiển thị trang đăng ký
+router.get('/register', (req, res) => {
+    res.render('auth/register', { message: '' });
+});
+
+// Hiển thị dashboard sau khi đăng nhập thành công
+router.get('/dashboard', (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.redirect('/auth/login');
+    }
+    res.render('dashboard/index', { user: req.user, message: 'Đăng nhập thành công!' });
+});
+
+// Xử lý đăng xuất
 router.get('/logout', (req, res) => {
-  req.logout(() => res.redirect('/auth/login'));
+    req.logout((err) => {
+        if (err) {
+            return next(err);
+        }
+        res.redirect('/auth/login');
+    });
 });
 
 module.exports = router;
