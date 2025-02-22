@@ -2,15 +2,33 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Quản lý người dùng</title>
-    
-    <link rel="stylesheet" href="/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{title}}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <nav>
-        <a href="/users">Danh sách người dùng</a> |
-        <a href="/users/add">Thêm người dùng</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">eTutoring</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/document">Tài liệu</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/appointment">Lịch hẹn</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/message">Tin nhắn</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/auth/login">Đăng nhập</a></li>
+                </ul>
+            </div>
+        </div>
     </nav>
-    {{{body}}}
+
+    <div class="container mt-4">
+        {{{body}}}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

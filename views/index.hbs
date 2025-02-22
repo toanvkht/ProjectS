@@ -1,116 +1,66 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ</title>
+    <link rel="stylesheet" href="/style.css">
 <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        header {
-            background-color: #007BFF;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1, h2 {
-            color: #007BFF;
-        }
-        .features, .team, .contact {
-            margin-bottom: 40px;
-        }
-        .features ul, .team ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        .features li, .team li {
-            background-color: #f9f9f9;
-            margin: 10px 0;
-            padding: 10px;
-            border-left: 5px solid #007BFF;
-        }
-        .team li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .contact form {
-            display: flex;
-            flex-direction: column;
-        }
-        .contact input, .contact textarea {
-            margin: 10px 0;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .contact button {
-            background-color: #007BFF;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .contact button:hover {
-            background-color: #0056b3;
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #007BFF;
-            color: white;
-            margin-top: 40px;
-        }
-    </style>
-<header>
-        <h1>Welcome to the eTutoring System</h1>
-        <p>Revolutionizing the way students and tutors interact in a university setting.</p>
-    </header>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
+}
 
+.container {
+    max-width: 500px;
+    margin: 50px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #333;
+}
+
+p {
+    color: #666;
+}
+
+.menu {
+    margin-top: 20px;
+}
+
+.button {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+</style>
+</head>
+<body>
     <div class="container">
-        <section class="features">
-            <h2>Key Features</h2>
-            <ul>
-                <li><strong>Personal Tutor Allocation:</strong> Easily allocate or reallocate personal tutors to students with bulk allocation support.</li>
-                <li><strong>Secure Messaging:</strong> Students and tutors can communicate securely within the system, with notifications sent via email.</li>
-                <li><strong>Meeting Scheduling:</strong> Schedule and record both real and virtual meetings with ease.</li>
-                <li><strong>Document Upload & Commenting:</strong> Upload documents and comment on them directly within the platform.</li>
-                <li><strong>Personal Dashboards:</strong> Each student and tutor has a personalized dashboard to track interactions and progress.</li>
-                <li><strong>Responsive Design:</strong> Access the system from any device, including mobile phones, tablets, and desktops.</li>
-            </ul>
-        </section>
+        <h1>Chào mừng bạn đến với eTutoring</h1>
+        <p>Chọn một trong các chức năng bên dưới:</p>
 
-        <section class="team">
-            <h2>Our Team</h2>
-            <ul>
-                <li><span>Database Designer</span> <span>John Doe</span></li>
-                <li><span>Information Architect</span> <span>Jane Smith</span></li>
-                <li><span>Programmers</span> <span>Alice Johnson, Bob Brown</span></li>
-                <li><span>Web Designer</span> <span>Charlie Davis</span></li>
-                <li><span>Tester</span> <span>Eve Wilson</span></li>
-                <li><span>Scrum Master</span> <span>Frank White</span></li>
-                <li><span>Product Owner</span> <span>Grace Lee</span></li>
-            </ul>
-        </section>
-
-        <section class="contact">
-            <h2>Contact Us</h2>
-            <form action="#" method="post">
-                <input type="text" name="name" placeholder="Your Name" required>
-                <input type="email" name="email" placeholder="Your Email" required>
-                <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
-                <button type="submit">Send Message</button>
-            </form>
-        </section>
+        <div class="menu">
+            <a href="/auth/login" class="button">Đăng Nhập</a>
+            <a href="/dashboard/student" class="button">Dashboard</a>
+            <a href="/document" class="button">Quản Lý Tài Liệu</a>
+            <a href="/appointment" class="button">Đặt Lịch Hẹn</a>
+            <a href="/message/" class="button">Nhắn Tin Nội Bộ</a>
+        </div>
     </div>
-
-    <footer>
-        <p>&copy; 2025 eTutoring System. All rights reserved.</p>
-    </footer>
+</body>
+</html>

@@ -4,7 +4,7 @@ const Message = require('../models/Message');
 
 router.get('/', async (req, res) => {
   const messages = await Message.find().populate('sender receiver');
-  res.render('message/index', { messages });
+  res.render('/message/index', { messages });
 });
 
 router.post('/send', async (req, res) => {

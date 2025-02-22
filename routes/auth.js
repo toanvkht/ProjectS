@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var bcrypt = require('bcryptjs');
 var passport = require('passport');
-var User = require('../models/User');
+var User = require('../models/Users');
 
 // Hiển thị form đăng ký
 router.get('/register', (req, res) => {
