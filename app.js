@@ -3,10 +3,19 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+var session = require('express-session');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+// Các route đã cài đặt
+
+var authRoutes = require('./routes/auth');
+var tutorRoutes = require('./routes/Tutor');
+var messageRoutes = require('./routes/message');
+var appointmentRoutes = require('./routes/appointment');
+var documentRoutes = require('./routes/document');
+var blogRoutes = require('./routes/blog');
+var dashboardRoutes = require('./routes/dashboard');
 
 var app = express();
 
@@ -15,8 +24,16 @@ var app = express();
 //hbs.registerHelper('dateFormat', require('handlebars-dateformat')); 
 //var hbs = require('hbs');
 //hbs.registerHelper('equal', require('handlebars-helper-equal'))
+app.use('/auth', authRoutes);
+app.use('/tutor', tutorRoutes);
+app.use('/message', messageRoutes);
+app.use('/appointment', appointmentRoutes);
+app.use('/document', documentRoutes);
+app.use('/blog', blogRoutes);
+app.use('/dashboard', dashboardRoutes);
 
-
+var passport = require('passport');
+require('./config/passport')(passport);
 
 // Kết nối MongoDB
 var mongoose = require('mongoose');
@@ -42,10 +59,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-// Routes
-const userRoutes = require('./routes/userRoutes');
-app.use('/users', userRoutes);
-
+app.use(session({
+  secret: 'yourSecret',
+  resave: true,
+  saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -59,7 +79,7 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 3001);
+  res.status(err.status || 500);
   res.render('error');
 });
 
