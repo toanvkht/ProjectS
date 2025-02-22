@@ -3,9 +3,9 @@ const router = express.Router();
 const User = require('../models/User');
 
 // Lấy danh sách người dùng
-router.get('/', async (req, res) => {
+router.get('/index', async (req, res) => {
     const users = await User.find();
-    res.render('users/indexx', { users });
+    res.render('users/index', { users });
 });
 
 // Hiển thị form thêm user
