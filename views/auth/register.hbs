@@ -1,31 +1,32 @@
 {{#> layouts/main }}
 
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header bg-success text-white">Đăng ký</div>
-            <div class="card-body">
-                {{#if message}}
-                    <div class="alert alert-info">{{message}}</div>
-                {{/if}}
-                <form action="/auth/register" method="POST">
-                    <div class="mb-3">
-                        <label class="form-label">Họ và tên</label>
-                        <input type="text" class="form-control" name="fullname" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" class="form-control" name="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Mật khẩu</label>
-                        <input type="password" class="form-control" name="password" required>
-                    </div>
-                    <button type="submit" class="btn btn-success w-100">Đăng ký</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+<form action="/auth/register" method="post">
+    <h1>Đăng ký</h1>
+    
+    Họ và tên: <input type="text" name="fullname" required>
+    <br><br>
+    
+    Email: <input type="email" name="email" required>
+    <br><br>
+    
+    Mật khẩu: <input type="password" name="password" required>
+    <br><br>
+    
+    Vai trò: 
+    <select name="role" required>
+        <option value="student">Student</option>
+        <option value="tutor">Tutor</option>
+        <option value="admin">Admin</option>
+    </select>
+    <br><br>
+    
+    <input class="btn btn-success" type="submit" value="Đăng ký">
+</form>
+
+<p>Đã có tài khoản? <a href="/auth/login">Đăng nhập ngay</a></p>
+
+{{#if message}}
+    <p style="color: green;">{{message}}</p>
+{{/if}}
 
 {{/layouts/main}}

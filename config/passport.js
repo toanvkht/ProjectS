@@ -1,30 +1,36 @@
 const LocalStrategy = require('passport-local').Strategy;
-const Users = require('../models/Users'); // hoặc đường dẫn chính xác đến model User của bạn
+const bcrypt = require('bcrypt');
+const User = require('../models/Users');
 
 module.exports = function(passport) {
-  passport.use(new LocalStrategy({ usernameField: 'username' }, (username, password, done) => {
-    // Tìm kiếm người dùng theo username trong CSDL
-    Users.findOne({ username: username }, (err, users) => {
-      if (err) return done(err);
-      if (!users) {
-        return done(null, false, { message: 'Không tìm thấy người dùng' });
-      }
-      // Giả sử bạn có phương thức so sánh mật khẩu
-      users.comparePassword(password, (err, isMatch) => {
-        if (err) return done(err);
-        if (isMatch) return done(null, users);
-        else return done(null, false, { message: 'Mật khẩu không đúng' });
-      });
-    });
-  }));
+    passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
+        try {
+            const user = await User.findOne({ email });
+            if (!user) {
+                return done(null, false, { message: 'Sai email hoặc mật khẩu!' });
+            }
 
-  passport.serializeUser((users, done) => {
-    done(null, users.id);
-  });
+            const isMatch = await bcrypt.compare(password, user.password);
+            if (!isMatch) {
+                return done(null, false, { message: 'Sai email hoặc mật khẩu!' });
+            }
 
-  passport.deserializeUser((id, done) => {
-    Users.findById(id, (err, users) => {
-      done(err, users);
+            return done(null, user);
+        } catch (err) {
+            return done(err);
+        }
+    }));
+
+    passport.serializeUser((user, done) => {
+        done(null, user.id);
     });
-  });
+
+    passport.deserializeUser(async (id, done) => {
+        try {
+            const user = await User.findById(id);
+            done(null, user);
+        } catch (err) {
+            done(err);
+        }
+    });
 };

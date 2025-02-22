@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
+var flash = require('connect-flash');
 
 // Import các route
 var indexRouter = require('./routes/index');
@@ -36,6 +37,8 @@ app.use(session({
   saveUninitialized: true
 }));
 
+app.use(flash());
+
 // Cấu hình Passport
 var passport = require('passport');
 require('./config/passport')(passport);
@@ -63,7 +66,7 @@ app.use('/message', messageRoutes);
 app.use('/appointment', appointmentRoutes);
 app.use('/document', documentRoutes);
 app.use('/blog', blogRoutes);
-app.use('/dashboard', dashboardRoutes);
+app.use('/dashboard', dashboardRoutes); 
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
