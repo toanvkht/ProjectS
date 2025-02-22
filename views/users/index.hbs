@@ -1,0 +1,22 @@
+<h1>Danh sách người dùng</h1>
+<table>
+    <tr>
+        <th>Tên</th>
+        <th>Email</th>
+        <th>Tuổi</th>
+        <th>Hành động</th>
+    </tr>
+    {{#each users}}
+    <tr>
+        <td>{{this.name}}</td>
+        <td>{{this.email}}</td>
+        <td>{{this.age}}</td>
+        <td>
+            <a href="/users/edit/{{this._id}}">Sửa</a>
+            <form action="/users/delete/{{this._id}}" method="POST" style="display:inline;">
+                <button type="submit">Xóa</button>
+            </form>
+        </td>
+    </tr>
+    {{/each}}
+</table>
