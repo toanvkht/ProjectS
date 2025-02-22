@@ -19,12 +19,15 @@ var app = express();
 
 
 // Kết nối MongoDB
-const mongoose = require('mongoose');
-var uri = "mongodb+srv://Khoiiiii:12345678@students.9fdhj.mongodb.net/?retryWrites=true&w=majority&appName=Students";
+var mongoose = require('mongoose');
+var uri = "mongodb+srv://khoihvtgch210919@pft.edu.vn:12345678@cluster0.zbmtc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 mongoose.set('strictQuery', true);
-mongoose.connect(uri)
-.then(() => console.log('MongoDB Connected'))
-.catch(err => console.log(err));
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('Connected to MongoDB'))
+.catch(err => console.log('MongoDB connection error:', err));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

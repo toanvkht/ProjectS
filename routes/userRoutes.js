@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User');
+const User = require('../models/Users');
 
 // Lấy danh sách người dùng
 router.get('/index', async (req, res) => {
@@ -15,8 +15,8 @@ router.get('/add', (req, res) => {
 
 // Xử lý thêm user
 router.post('/add', async (req, res) => {
-    const { name, email, age } = req.body;
-    await User.create({ name, email, age });
+    const { name, email } = req.body;
+    await User.create({ name, email });
     res.redirect('/users');
 });
 
