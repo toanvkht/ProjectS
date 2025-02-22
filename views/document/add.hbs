@@ -1,0 +1,13 @@
+{{#> layouts/main }}
+
+<h2>Thêm tài liệu mới</h2>
+
+<form action="/document/add" method="post" enctype="multipart/form-data" class="form-inline">
+    <input type="text" name="title" class="form-control" placeholder="Tên tài liệu" required>
+    <input type="text" name="author" class="form-control" placeholder="Người đăng" required>
+    <textarea name="content" class="form-control" placeholder="Nội dung" required></textarea>
+    <input type="file" name="file" class="form-control">
+    <button type="submit" class="btn btn-success">Thêm tài liệu</button>
+</form>
+
+{{/layouts/main}}

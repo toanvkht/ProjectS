@@ -2,23 +2,34 @@
 
 <h2>Quản lý tài liệu</h2>
 
+<form action="/document/search" method="get" class="form-inline">
+    <input type="text" name="query" class="form-control" placeholder="Tìm kiếm tài liệu">
+    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+</form>
+
+<a href="/document/add" class="btn btn-success">Thêm tài liệu</a>
+
 <table class="table">
     <thead>
         <tr>
             <th>Tên tài liệu</th>
             <th>Người đăng</th>
+            <th>Nội dung</th>
+            <th>File</th>
             <th>Thao tác</th>
         </tr>
     </thead>
     <tbody>
+        {{#each documents}}
         <tr>
-            <td>Bài giảng Node.js</td>
-            <td>GV. Nguyễn Văn A</td>
+            <td>{{this.title}}</td>
+            <td>{{this.author}}</td>
+            <td>{{this.content}}</td>
+            <td><a href="/uploads/{{this.file}}" target="_blank">Tải về</a></td>
             <td><a href="#" class="btn btn-sm btn-primary">Xem</a></td>
         </tr>
+        {{/each}}
     </tbody>
 </table>
-
-<a href="/document/add" class="btn btn-success">Thêm tài liệu</a>
 
 {{/layouts/main}}
