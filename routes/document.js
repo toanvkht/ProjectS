@@ -34,4 +34,40 @@ router.get('/search', async (req, res) => {
     res.render('document/index', { documents });
 });
 
+// Edit document route
+router.get('/edit/:id', async (req, res) => {
+  try {
+      const documentId = req.params.id;
+      const document = await Document.findById(documentId);
+
+      if (!document) {
+          return res.status(404).send('Document not found');
+      }
+
+      res.render('document/edit', { document });
+  } catch (error) {
+      console.error('Error fetching document:', error);
+      res.status(500).send('Internal Server Error');
+  }
+});
+// Update document route
+router.post('/update/:id', async (req, res) => {
+  try {
+      const documentId = req.params.id;
+      const { title, author, content, imageUrl } = req.body;
+
+      await Document.findByIdAndUpdate(documentId, {
+          title,
+          author,
+          content,
+          imageUrl
+      });
+
+      res.redirect('/document'); // Redirect to the document list page after updating
+  } catch (error) {
+      console.error('Error updating document:', error);
+      res.status(500).send('Internal Server Error');
+  }
+});
+
 module.exports = router;

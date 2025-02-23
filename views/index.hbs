@@ -39,36 +39,7 @@
         </div>
 
         <!-- Documents Table -->
-        <div class="card shadow-sm mt-4">
-            <div class="card-header bg-primary text-white text-center">
-                <h4>📚 List of Documents</h4>
-            </div>
-            <div class="card-body">
-                <table class="table table-hover table-bordered">
-                    <thead class="table-primary">
-                        <tr>
-                            <th>Tên tài liệu</th>
-                            <th>Người đăng</th>
-                            <th>Nội dung</th>
-                            <th>Ảnh</th>
-                            <th>Thao tác</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{#each documents}}
-                        <tr>
-                            <td>{{this.title}}</td>
-                            <td>{{this.author}}</td>
-                            <td>{{this.content}}</td>
-                            <td><img src="{{this.imageUrl}}" alt="{{this.title}}" style="max-width: 100px;"></td>
-                            <td><a href="#" class="btn btn-sm btn-primary">Xem</a></td>
-                        </tr>
-                        {{/each}}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+        
 
     <!-- Footer -->
     <footer class="bg-primary text-white text-center py-3 mt-5">
