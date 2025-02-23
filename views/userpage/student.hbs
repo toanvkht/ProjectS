@@ -25,6 +25,35 @@
         
         <h1 class="text-center">Student User Page</h1>
         <p class="text-center">Welcome, {{user.fullname}}</p>
+
+        <h2 class="text-center mt-4">Write a New Blog</h2>
+        <form action="/blog" method="post">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+            <div class="mb-3">
+                <label for="content" class="form-label">Content</label>
+                <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+            </div>
+            <input type="hidden" name="role" value="student">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+        <h2 class="text-center mt-4">Student Blogs</h2>
+        <div class="row">
+            {{#each blogs}}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{this.title}}</h5>
+                        <p class="card-text">{{this.content}}</p>
+                        <p class="card-text"><small class="text-muted">By {{this.author.fullname}}</small></p>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
     </div>
 
     <footer>
