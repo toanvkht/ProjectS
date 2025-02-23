@@ -67,14 +67,16 @@ router.post('/login', (req, res, next) => {
     })(req, res, next);
 });
 
-// Xử lý đăng xuất
-router.get('/logout', (req, res, next) => {
+// Route đăng xuất
+router.get('/logout', (req, res) => {
     req.logout((err) => {
-        if (err) return next(err);
-        req.flash('success', 'Đăng xuất thành công!');
-        res.redirect('/auth/login');
+      if (err) {
+        return next(err);
+      }
+      req.flash('success_msg', 'Bạn đã đăng xuất');
+      res.redirect('/auth/login');
     });
-});
+  });
 
 // Middleware kiểm tra quyền truy cập
 function checkRole(role) {

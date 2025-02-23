@@ -31,6 +31,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Middleware kiểm tra xác thực
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect('/auth/login');
+}
+
 // Cấu hình session (nên đặt trước khi khởi tạo Passport)
 app.use(session({
   secret: 'yourSecret',
@@ -65,10 +73,10 @@ app.use('/auth', authRoutes);
 app.use('/tutor', tutorRoutes);
 app.use('/message', messageRoutes);
 app.use('/appointment', appointmentRoutes);
-app.use('/document', documentRoutes); // Đảm bảo rằng bạn đã thêm dòng này
+app.use('/document', documentRoutes); 
 app.use('/blog', blogRoutes);
 app.use('/dashboard', dashboardRoutes);
-app.use('/userpage', userpageRoutes); // Thêm dòng này
+app.use('/userpage', userpageRoutes); 
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

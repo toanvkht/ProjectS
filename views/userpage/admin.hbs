@@ -1,4 +1,74 @@
-{{#>layouts }}
-<h1>Admin User Page</h1>
-<p>Welcome, {{user.fullname}}</p>
-{{/layouts }}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin User Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Admin User Page</h1>
+        <p class="text-center">Welcome, {{user.fullname}}</p>
+        <div class="text-center">
+            <a href="/auth/logout" class="btn btn-danger">Logout</a>
+        </div>
+
+        <div class="mt-4">
+            <h2 class="text-primary">Danh sách Tutor</h2>
+            <table class="table table-hover table-bordered mt-3">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Tên</th>
+                        <th>Email</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each tutors}}
+                    <tr>
+                        <td>{{this.fullname}}</td>
+                        <td>{{this.email}}</td>
+                        <td>
+                            <a href="/userpage/edit/{{this._id}}" class="btn btn-sm btn-warning">Edit</a>
+                            <form action="/userpage/delete/{{this._id}}" method="post" class="d-inline">
+                                <input type="hidden" name="role" value="tutor">
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-4">
+            <h2 class="text-primary">Danh sách Student</h2>
+            <table class="table table-hover table-bordered mt-3">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Tên</th>
+                        <th>Email</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each students}}
+                    <tr>
+                        <td>{{this.fullname}}</td>
+                        <td>{{this.email}}</td>
+                        <td>
+                            <a href="/userpage/edit/{{this._id}}" class="btn btn-sm btn-warning">Edit</a>
+                            <form action="/userpage/delete/{{this._id}}" method="post" class="d-inline">
+                                <input type="hidden" name="role" value="student">
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
