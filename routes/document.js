@@ -104,16 +104,22 @@ router.get('/mainDocument', async (req, res) => {
 // Thêm bình luận vào tài liệu (chỉ người đăng nhập mới có thể bình luận)
 router.post('/comment/:id', ensureAuthenticated, async (req, res) => {
   try {
-      const document = await Document.findById(req.params.id);
-      if (!document) return res.status(404).send('Tài liệu không tồn tại');
+    const documentId = req.params.id;
+    const user = req.user; // Assuming you have user authentication
+    const { text } = req.body;
 
-      document.comments.push({
-          user: req.user._id,
-          username: req.user.username, // Lưu tên người dùng
-          text: req.body.text
-      });
+    const document = await Document.findById(documentId);
+    if (!document) {
+        return res.status(404).send('Document not found');
+    }
 
+    const comment = {
+        username: user.fullname, // Use the fullname of the user
+        text
+    };
+      document.comments.push(comment);
       await document.save();
+
       res.redirect('/document/mainDocument'); // Reload lại trang 
   } catch (error) {
       console.error('Lỗi khi bình luận:', error);
