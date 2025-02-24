@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/Users');
 
-// Hiển thị trang admin với danh sách tutor và student
+// Hiển thị trang Admin
 router.get('/admin', async (req, res) => {
   try {
     const tutors = await User.find({ role: 'tutor' });
@@ -14,14 +14,6 @@ router.get('/admin', async (req, res) => {
   }
 });
 
-// Hiển thị trang tutor
-router.get('/tutor', (req, res) => {
-  res.render('userpage/tutor', { user: req.user });
-});
 
-// Hiển thị trang student
-router.get('/student', (req, res) => {
-  res.render('userpage/student', { user: req.user });
-});
 
 module.exports = router;
