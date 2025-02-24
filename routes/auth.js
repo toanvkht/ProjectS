@@ -35,48 +35,41 @@ router.post('/register', async (req, res) => {
 
 // Hiển thị trang đăng nhập
 router.get('/login', (req, res) => {
+    if (req.isAuthenticated()) {
+        const redirectPath = getRedirectPath(req.user.role);
+        if (redirectPath !== '/auth/login') {
+            return res.redirect(redirectPath);
+        }
+    }
     res.render('auth/login', { message: req.flash('error') });
 });
+
 
 // Xử lý đăng nhập
 router.post('/login', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
         if (err) return next(err);
         if (!user) {
-            req.flash('error', info.message);
+            req.flash('error', info ? info.message : 'Đăng nhập thất bại');
             return res.redirect('/auth/login');
         }
 
         req.logIn(user, (err) => {
             if (err) return next(err);
-
-            console.log('User role:', user.role); // Log vai trò của người dùng
-
-            // Điều hướng theo vai trò
-            if (user.role === 'admin') {
-                return res.redirect('/userpage/admin');
-            } else if (user.role === 'tutor') {
-                return res.redirect('/userpage/tutor');
-            } else if (user.role === 'student') {
-                return res.redirect('/userpage/student');
-            } else {
-                req.flash('error', 'Vai trò không xác định!');
-                return res.redirect('/auth/login');
-            }
+            console.log('User role:', user.role); // Debugging
+            return res.redirect(getRedirectPath(user.role));
         });
     })(req, res, next);
 });
 
 // Route đăng xuất
-router.get('/logout', (req, res) => {
+router.get('/logout', (req, res, next) => {
     req.logout((err) => {
-      if (err) {
-        return next(err);
-      }
-      req.flash('success_msg', 'Bạn đã đăng xuất');
-      res.redirect('/auth/login');
+        if (err) return next(err);
+        req.flash('success_msg', 'Bạn đã đăng xuất');
+        res.redirect('/auth/login');
     });
-  });
+});
 
 // Middleware kiểm tra quyền truy cập
 function checkRole(role) {
@@ -88,5 +81,24 @@ function checkRole(role) {
         res.redirect('/auth/login');
     };
 }
+
+// Middleware đảm bảo đã đăng nhập
+function ensureAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/auth/login');
+}
+
+// Hàm hỗ trợ điều hướng theo role
+function getRedirectPath(role) {
+    switch (role) {
+        case 'admin': return '/userpage/admin';
+        case 'tutor': return '/userpage/tutor';
+        case 'student': return '/userpage/student';
+        default: return '/'; // Tránh redirect về `/auth/login` gây vòng lặp
+    }
+}
+
 
 module.exports = router;

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Blog = require('../models/Blog');
-const User = require('../models/User'); // Adjust the path to your User model
+const User = require('../models/Users'); // Adjust the path to your User model
 
 // Route to display all blogs
 router.get('/', async (req, res) => {
