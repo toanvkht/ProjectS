@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
 var flash = require('connect-flash');
+var methodOverride = require('method-override');
 
 // Import các route
 var indexRouter = require('./routes/index');
@@ -38,7 +39,10 @@ function ensureAuthenticated(req, res, next) {
     return next();
   }
   res.redirect('/auth/login');
+  
 }
+app.use(methodOverride('_method'));
+
 
 // Cấu hình session (nên đặt trước khi khởi tạo Passport)
 app.use(session({

@@ -70,4 +70,17 @@ router.post('/update/:id', async (req, res) => {
   }
 });
 
+// Xử lý xóa tài liệu với phương thức POST
+router.delete('/delete/:id', async (req, res) => {
+  try {
+      await Document.findByIdAndDelete(req.params.id);
+      res.redirect('/document');
+  } catch (error) {
+      console.error('Lỗi khi xóa tài liệu:', error);
+      res.status(500).send('Lỗi máy chủ nội bộ');
+  }
+});
+
+
+
 module.exports = router;
