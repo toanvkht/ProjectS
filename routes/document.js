@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Document = require('../models/Document');
 
+
+
 // Hiển thị trang quản lý tài liệu
 router.get('/', async (req, res) => {
   try {
@@ -80,6 +82,46 @@ router.delete('/delete/:id', async (req, res) => {
       res.status(500).send('Lỗi máy chủ nội bộ');
   }
 });
+
+const ensureAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated && req.isAuthenticated()) {
+      return next();
+  }
+  res.redirect('/auth/login'); // Nếu chưa đăng nhập, chuyển hướng về trang đăng nhập
+};
+
+// Hiển thị trang danh sách tài liệu với bình luận
+router.get('/mainDocument', async (req, res) => {
+  try {
+      const documents = await Document.find().populate('comments.user', 'username'); // Lấy dữ liệu bình luận kèm tên user
+      res.render('document/mainDocument', { documents, user: req.user });
+  } catch (error) {
+      console.error('Lỗi lấy dữ liệu:', error);
+      res.status(500).send('Lỗi máy chủ ha ');
+  }
+});
+
+// Thêm bình luận vào tài liệu (chỉ người đăng nhập mới có thể bình luận)
+router.post('/comment/:id', ensureAuthenticated, async (req, res) => {
+  try {
+      const document = await Document.findById(req.params.id);
+      if (!document) return res.status(404).send('Tài liệu không tồn tại');
+
+      document.comments.push({
+          user: req.user._id,
+          username: req.user.username, // Lưu tên người dùng
+          text: req.body.text
+      });
+
+      await document.save();
+      res.redirect('/document/mainDocument'); // Reload lại trang 
+  } catch (error) {
+      console.error('Lỗi khi bình luận:', error);
+      res.status(500).send('Lỗi máy chủ ');
+  }
+});
+
+
 
 
 

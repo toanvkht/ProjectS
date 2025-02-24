@@ -42,20 +42,18 @@ function ensureAuthenticated(req, res, next) {
   
 }
 app.use(methodOverride('_method'));
-
-
-// Cấu hình session (nên đặt trước khi khởi tạo Passport)
-app.use(session({
-  secret: 'yourSecret',
-  resave: true,
-  saveUninitialized: true
-}));
-
 app.use(flash());
 
 // Cấu hình Passport
 var passport = require('passport');
 require('./config/passport')(passport);
+
+app.use(session({
+  secret: 'yourSecret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false }
+}));
 
 app.use(passport.initialize());
 app.use(passport.session());

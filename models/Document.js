@@ -16,7 +16,15 @@ const documentSchema = new mongoose.Schema({
   imageUrl: {
     type: String,
     required: true
-  }
+  },
+  comments: [
+    {
+        user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, 
+        username: String, 
+        text: String, 
+        createdAt: { type: Date, default: Date.now } 
+    }
+]
 });
 
 const Document = mongoose.model('Document', documentSchema);
