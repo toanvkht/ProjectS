@@ -54,4 +54,51 @@ router.get('/tutor', async (req, res) => {
     }
 });
 
+// Route to display the edit form for a blog post
+router.get('/edit/:id', async (req, res) => {
+    try {
+        const blogId = req.params.id;
+        const blog = await Blog.findById(blogId);
+
+        if (!blog) {
+            return res.status(404).send('Blog not found');
+        }
+
+        res.render('blog/edit', { blog });
+    } catch (error) {
+        console.error('Error fetching blog:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+// Route to handle the update of a blog post
+router.post('/edit/:id', async (req, res) => {
+    try {
+        const blogId = req.params.id;
+        const { title, content } = req.body;
+
+        await Blog.findByIdAndUpdate(blogId, {
+            title,
+            content
+        });
+
+        res.redirect('/blog'); // Redirect to the blog list page after updating
+    } catch (error) {
+        console.error('Error updating blog:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+// Route to handle the deletion of a blog post
+router.post('/delete/:id', async (req, res) => {
+    try {
+        const blogId = req.params.id;
+        await Blog.findByIdAndDelete(blogId);
+        res.redirect('/blog'); // Redirect to the blog list page after deleting
+    } catch (error) {
+        console.error('Error deleting blog:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
 module.exports = router;
