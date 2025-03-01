@@ -31,9 +31,11 @@ app.use(methodOverride('_method'));
 app.use(flash());
 
 // ✅ Đăng ký helper "eq" sau khi import hbs
-hbs.registerHelper("eq", function (a, b) {
-  return a === b;
+hbs.registerHelper("isSender", function (sender, userId) {
+  return sender.toString() === userId.toString();
 });
+
+
 
 // Cấu hình session & Passport
 app.use(session({
@@ -98,6 +100,7 @@ io.on('connection', (socket) => {
       }
 
       try {
+          // Lưu tin nhắn vào database
           const newMessage = new Message({
               sender: msg.sender,
               receiver: msg.receiver,
@@ -105,11 +108,29 @@ io.on('connection', (socket) => {
           });
 
           await newMessage.save();
-
           console.log("✅ Tin nhắn đã lưu vào database:", newMessage);
 
-          // Gửi tin nhắn real-time đến người nhận
-          io.emit('chat message', newMessage);
+          // Lấy thông tin người gửi và người nhận từ DB
+          const senderInfo = await User.findById(msg.sender);
+          const receiverInfo = await User.findById(msg.receiver);
+
+          if (!senderInfo || !receiverInfo) return console.error("⚠️ Không tìm thấy người gửi hoặc người nhận!");
+
+          // Gửi tin nhắn đến đúng hai người
+          io.to(msg.sender).emit("chat message", {
+            sender: msg.sender,
+            receiver: msg.receiver,
+            senderName: "Bạn",  // Nếu bạn là sender, hiển thị "Bạn"
+            message: msg.message
+          });
+          
+            io.to(msg.receiver).emit("chat message", {
+                sender: msg.sender,
+                receiver: msg.receiver,
+                senderName: senderInfo.fullname, // Hiển thị đúng tên người gửi
+                message: msg.message
+            });
+
       } catch (err) {
           console.error("❌ Lỗi khi lưu tin nhắn vào database:", err);
       }
@@ -119,7 +140,6 @@ io.on('connection', (socket) => {
       console.log(`❌ Người dùng ${socket.userId} đã ngắt kết nối`);
   });
 });
-
 
 // Xử lý lỗi 404
 app.use((req, res, next) => next(createError(404)));
