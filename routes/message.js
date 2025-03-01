@@ -1,26 +1,43 @@
 const express = require('express');
 const router = express.Router();
-const { ensureAuthenticated } = require('../middleware/auth');
 const User = require('../models/Users');
 const Message = require('../models/Message');
 
-// Trang danh sách người dùng để nhắn tin
-router.get('/', ensureAuthenticated, async (req, res) => {
-    const users = await User.find({ _id: { $ne: req.user._id } }); // Lấy danh sách user trừ bản thân
-    res.render('message', { users });
+// Danh sách người dùng để chọn chat
+router.get('/', async (req, res) => {
+    const users = await User.find(); 
+    res.render('message/index', { users });
 });
 
-// Trang chat với một người
-router.get('/:id', ensureAuthenticated, async (req, res) => {
-    const chatUser = await User.findById(req.params.id);
+// Trang chat với người dùng được chọn
+router.get('/chat/:receiverId', async (req, res) => {
+    const receiver = await User.findById(req.params.receiverId);
     const messages = await Message.find({
         $or: [
-            { sender: req.user._id, receiver: req.params.id },
-            { sender: req.params.id, receiver: req.user._id }
+            { sender: req.user._id, receiver: req.params.receiverId },
+            { sender: req.params.receiverId, receiver: req.user._id }
         ]
-    }).populate('sender');
+    }).sort({ timestamp: 1 });
 
-    res.render('message/chat', { chatUser, messages, user: req.user });
+    res.render('message/chat', { receiver, messages });
+});
+
+// Gửi tin nhắn
+router.post('/chat/:receiverId', async (req, res) => {
+    const { message } = req.body;
+
+    if (!message) {
+        return res.status(400).send("Tin nhắn không được để trống!");
+    }
+
+    const newMessage = new Message({
+        sender: req.user._id,
+        receiver: req.params.receiverId,
+        message
+    });
+
+    await newMessage.save();
+    res.redirect(`/message/chat/${req.params.receiverId}`);
 });
 
 module.exports = router;
