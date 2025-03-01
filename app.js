@@ -89,6 +89,7 @@ io.on('connection', (socket) => {
   socket.on('registerUser', (userId) => {
       socket.userId = userId;
       console.log(`✅ Người dùng ${userId} đã đăng ký socket.`);
+      socket.join(userId);
   });
 
   socket.on('chat message', async (msg) => {
@@ -117,20 +118,23 @@ io.on('connection', (socket) => {
           if (!senderInfo || !receiverInfo) return console.error("⚠️ Không tìm thấy người gửi hoặc người nhận!");
 
           // Gửi tin nhắn đến đúng hai người
-          io.to(msg.sender).emit("chat message", {
-            sender: msg.sender,
-            receiver: msg.receiver,
-            senderName: "Bạn",  // Nếu bạn là sender, hiển thị "Bạn"
-            message: msg.message
+          // Gửi tin nhắn ngay lập tức cho cả người gửi và người nhận
+        io.to(msg.sender).emit("chat message", {
+          sender: msg.sender,
+          receiver: msg.receiver,
+          senderName: "Bạn",
+          message: msg.message,
           });
-          
-            io.to(msg.receiver).emit("chat message", {
-                sender: msg.sender,
-                receiver: msg.receiver,
-                senderName: senderInfo.fullname, // Hiển thị đúng tên người gửi
-                message: msg.message
-            });
 
+          io.to(msg.receiver).emit("chat message", {
+              sender: msg.sender,
+              receiver: msg.receiver,
+              senderName: msg.senderName, // Lấy tên từ client để hiển thị chính xác
+              message: msg.message,
+          });
+
+          console.log("📩 Tin nhắn đã gửi đến:", msg.sender, msg.receiver);
+          
       } catch (err) {
           console.error("❌ Lỗi khi lưu tin nhắn vào database:", err);
       }

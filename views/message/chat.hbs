@@ -54,6 +54,9 @@
         <div class="container">
             <a href="/message" class="navbar-brand">Quay lại</a>
         </div>
+        <div class="ms-auto">
+            <a href="/auth/login" class="btn btn-light">Trang cá nhân</a>
+        </div>
     </nav>
 
     <div class="container mt-4">
@@ -95,8 +98,9 @@
     document.getElementById("chat-form").addEventListener("submit", function(e) {
         e.preventDefault();
         const message = document.getElementById("message").value;
-        const msg = { sender: senderId, receiver: receiverId, message };
-        socket.emit("chat message", msg);
+        const msg = { sender: senderId, receiver: receiverId, message, senderName: "{{user.fullname}}" };
+
+        socket.emit("chat message", msg); // Gửi tin nhắn lên server
         document.getElementById("message").value = "";
     });
 
@@ -105,9 +109,11 @@
         console.log("📩 Tin nhắn nhận được:", msg);
 
         // Chỉ hiển thị tin nhắn nếu là cuộc trò chuyện hiện tại
-        if (msg.sender === senderId || msg.receiver === senderId) {
+        if ((msg.sender === senderId && msg.receiver === receiverId) || 
+            (msg.sender === receiverId && msg.receiver === senderId)) {
+            
             let isSelf = msg.sender === senderId;
-            let senderDisplayName = isSelf ? msg.senderName : msg.senderName;
+            let senderDisplayName = isSelf ? "Bạn" : msg.senderName;
 
             let messageContainer = document.createElement("div");
             messageContainer.classList.add("message-container", isSelf ? "self" : "other");
@@ -122,5 +128,6 @@
         }
     });
 </script>
+
 </body>
 </html>
