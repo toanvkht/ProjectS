@@ -7,6 +7,14 @@ var session = require('express-session');
 var flash = require('connect-flash');
 var methodOverride = require('method-override');
 
+const hbs = require('hbs');
+
+// Register eq helper
+hbs.registerHelper('eq', function(a, b) {
+    return a === b;
+});
+
+
 // Import các route
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -95,6 +103,10 @@ app.use(function(err, req, res, next) {
   // Render trang error với status code tương ứng
   res.status(err.status || 500);
   res.render('error');
+});
+
+app.listen(3001, () => {
+  console.log('Server is running on port 3001');
 });
 
 module.exports = app;
