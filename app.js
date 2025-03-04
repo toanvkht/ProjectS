@@ -11,13 +11,13 @@ const methodOverride = require('method-override');
 const passport = require('passport');
 const hbs = require('hbs'); 
 
-const hbs = require('hbs');
+require('./config/database'); 
+require('./config/passport')(passport); 
 
 // Register eq helper
 hbs.registerHelper('eq', function(a, b) {
     return a === b;
 });
-
 
 // Import các route
 var indexRouter = require('./routes/index');
@@ -29,7 +29,7 @@ var appointmentRoutes = require('./routes/appointment');
 var documentRoutes = require('./routes/document');
 var blogRoutes = require('./routes/blog');
 var dashboardRoutes = require('./routes/dashboard');
-var userpageRoutes = require('./routes/userpage'); // Thêm dòng này
+var userpageRoutes = require('./routes/userpage');
 
 const app = express();
 const server = http.createServer(app);
@@ -50,7 +50,6 @@ app.use(flash());
 hbs.registerHelper("isSender", function (sender, userId) {
   return sender.toString() === userId.toString();
 });
-
 
 
 // Cấu hình session & Passport
@@ -168,12 +167,12 @@ app.use((req, res, next) => next(createError(404)));
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-  res.status(err.status || 500);
+  res.status(err.status || 3001);
   res.render('error');
 });
 
 app.listen(3001, () => {
-  console.log('Server is running on port 3001');
+  console.log('Server is running');
 });
 
 module.exports = app;
