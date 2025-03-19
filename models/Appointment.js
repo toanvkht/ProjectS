@@ -4,7 +4,7 @@ const AppointmentSchema = new mongoose.Schema({
   student: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   teacher: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   meetingDate: { type: Date, required: true },
-  note: String,
+  note: { type: String },
   meetingType: { type: String, enum: ['direct', 'online'], default: 'direct' }
 });
 module.exports = mongoose.model('Appointment', AppointmentSchema);

@@ -85,5 +85,4 @@ function getRedirectPath(role) {
     }
 }
 
-
 module.exports = router;

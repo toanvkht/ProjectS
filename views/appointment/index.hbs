@@ -1,24 +1,32 @@
-{{#> layouts/main }}
+{{!-- Sử dụng layout chính --}}
+{{! views/appointment/index.hbs }}
+<h1 class="mb-4">Danh sách cuộc hẹn</h1>
 
-<h2>Đặt lịch hẹn</h2>
+<a href="/appointment/add" class="btn btn-primary mb-3">Thêm cuộc hẹn</a>
 
-<table class="table">
+<table class="table table-bordered">
     <thead>
         <tr>
-            <th>Ngày</th>
-            <th>Giảng viên</th>
-            <th>Trạng thái</th>
+            <th>Học sinh</th>
+            <th>Giáo viên</th>
+            <th>Ngày họp</th>
+            <th>Loại họp</th>
+            <th>Ghi chú</th>
         </tr>
     </thead>
     <tbody>
+        {{#each appointments}}
         <tr>
-            <td>12/03/2025</td>
-            <td>GV. Nguyễn Văn A</td>
-            <td>Đã xác nhận</td>
+            <td>{{this.student.name}}</td>
+            <td>{{this.teacher.name}}</td>
+            <td>{{this.meetingDate}}</td>
+            <td>{{this.meetingType}}</td>
+            <td>{{this.note}}</td>
         </tr>
+        {{else}}
+        <tr>
+            <td colspan="5" class="text-center">Không có cuộc hẹn nào.</td>
+        </tr>
+        {{/each}}
     </tbody>
 </table>
-
-<a href="/appointment/add" class="btn btn-success">Đặt lịch mới</a>
-
-{{/layouts/main}}

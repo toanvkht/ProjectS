@@ -9,9 +9,14 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const methodOverride = require('method-override');
 const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 const hbs = require('hbs'); 
+var mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
-const hbs = require('hbs');
+
+require('./config/database'); // cam' xoa'
+require('./config/passport')(passport); //cam' xoa'
 
 // Register eq helper
 hbs.registerHelper('eq', function(a, b) {
@@ -31,9 +36,21 @@ var blogRoutes = require('./routes/blog');
 var dashboardRoutes = require('./routes/dashboard');
 var userpageRoutes = require('./routes/userpage'); // Thêm dòng này
 
+
+
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
+
+// var mongoose = require("mongoose");
+// //var uri = "mongodb+srv://cuongtranmongo:fHRny7q9u4wN9iAE@toystore.cqorbge.mongodb.net/ToyStore";
+// var uri = "mongodb://localhost:27017/eTutoring";
+// mongoose.set('strictQuery', true); 
+
+// mongoose.connect(uri)
+// .then(() => console.log ("Connect to DB succeed !"))
+// .catch((err) => console.log (err));
+
 
 // Middleware cơ bản
 app.set('views', path.join(__dirname, 'views'));
@@ -45,6 +62,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride('_method'));
 app.use(flash());
+app.use(passport.initialize());
 
 // ✅ Đăng ký helper "eq" sau khi import hbs
 hbs.registerHelper("isSender", function (sender, userId) {
@@ -95,6 +113,22 @@ app.use('/document', routes.document);
 app.use('/blog', routes.blog);
 app.use('/dashboard', routes.dashboard);
 app.use('/userpage', routes.userpage);
+
+
+app.use((req, res, next) => {
+  if (!req.session) {
+      console.error("❌ ERROR: req.session is undefined! Check express-session configuration.");
+      return next();
+  }
+
+  if (!req.session.firstPath && req.method === 'GET' && !req.path.startsWith('/auth')) {
+      req.session.firstPath = req.path;
+      console.log("🔹 First visited path stored:", req.session.firstPath);
+  }
+
+  console.log("📌 Current firstPath in session:", req.session.firstPath); // Debug log
+  next();
+});
 
 const onlineUsers = {};
 
@@ -173,7 +207,7 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(3001, () => {
-  console.log('Server is running on port 3001');
+  console.log('Server is running on https://localhost:3001');
 });
 
 module.exports = app;
