@@ -1,14 +1,10 @@
 var mongoose = require('mongoose');
 var ScheduleSchema = mongoose.Schema({
+   day: String,
    time: String,
-   subject: String,
-   student: [{
+   class: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'students'  
-    }],
-   tutor: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'tutors'  
+        ref: 'classes'  
    },
 });
 

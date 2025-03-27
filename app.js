@@ -25,10 +25,9 @@ var usersRouter = require('./routes/users');
 var authRoutes = require('./routes/auth');
 var tutorRoutes = require('./routes/Tutor');
 var messageRoutes = require('./routes/message');
-var appointmentRoutes = require('./routes/appointment');
 var documentRoutes = require('./routes/document');
 var blogRoutes = require('./routes/blog');
-var dashboardRoutes = require('./routes/dashboard');
+var dashboardRoutes = require('./routes/admin_dashboard');
 var userpageRoutes = require('./routes/userpage');
 
 const app = express();
@@ -76,11 +75,12 @@ const routes = {
   auth: require('./routes/auth'),
   tutor: require('./routes/Tutor'),
   message: require('./routes/message'),
-  appointment: require('./routes/appointment'),
+  meeting: require('./routes/meeting'),
   document: require('./routes/document'),
   blog: require('./routes/blog'),
-  dashboard: require('./routes/dashboard'),
+  admin_dashboard: require('./routes/admin_dashboard'),
   userpage: require('./routes/userpage'),
+  class: require('./routes/class'),
   schedule: require('./routes/schedule')
 };
 
@@ -90,11 +90,12 @@ app.use('/users', routes.users);
 app.use('/auth', routes.auth);
 app.use('/tutor', routes.tutor);
 app.use('/message', routes.message);
-app.use('/appointment', routes.appointment);
+app.use('/meeting', routes.meeting);
 app.use('/document', routes.document);
 app.use('/blog', routes.blog);
-app.use('/dashboard', routes.dashboard);
+app.use('/admin/dashboard', routes.admin_dashboard);
 app.use('/userpage', routes.userpage);
+app.use('/class', routes.class);
 app.use('/schedule', routes.schedule)
 const onlineUsers = {};
 
