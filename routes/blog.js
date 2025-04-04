@@ -61,6 +61,7 @@ router.get('/student', async (req, res) => {
   }
 });
 
+
 // Route to display blogs for tutors
 router.get('/tutor', async (req, res) => {
     try {

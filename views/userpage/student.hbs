@@ -54,6 +54,7 @@
         <div class="d-flex align-items-center">
             <a href="/document/mainDocument" class="btn btn-light me-2">Main Document</a>
             <a href="/blog" class="btn btn-light me-2">Blog</a>
+            <a href="/dashboard/student_dashboard" class="btn btn-light me-2">Dashboard</a>
             
             <!-- Biểu tượng tin nhắn -->
             <a href="/message" class="btn btn-light me-2">
@@ -120,23 +121,6 @@
         <input type="hidden" name="role" value="student">
         <button type="submit" class="btn btn-primary w-100">Đăng bài</button>
     </form>
-
-        <!-- Hiển thị danh sách blog -->
-        <h2 class="text-center mt-4">Student Blogs</h2>
-        <div class="row">
-            {{#each blogs}}
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{this.title}}</h5>
-                        <p class="card-text">{{this.content}}</p>
-                        <p class="card-text"><small class="text-muted">By {{this.author.fullname}}</small></p>
-                    </div>
-                </div>
-            </div>
-            {{/each}}
-        </div>
-    </div>
 
     <footer>
         <p>&copy; 2025 Student Portal. All rights reserved.</p>
