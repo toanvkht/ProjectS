@@ -1,10 +1,6 @@
 var express = require('express');
 var router = express.Router();
-<<<<<<< HEAD
 const { sendEmail } = require("../servicesss/mailer");
-=======
-const { sendEmail } = require("../services/mailer");
->>>>>>> 9e5be9f09055bf76bc938df4b1b28c33b5d7f736
 const moment = require('moment'); 
 var ScheduleModel = require('../models/Schedule');
 var ClassModel = require('../models/Class');
@@ -20,14 +16,8 @@ router.get('/schedule-view/:weekOffset?', async (req, res) => {
     let endOfWeek = moment().endOf('isoWeek').add(weekOffset - 1, 'weeks'); // Chủ nhật
     let weekRange = `${startOfWeek.format('DD/MM')} - ${endOfWeek.format('DD/MM')}`;
     
-<<<<<<< HEAD
     const schedules = await ScheduleModel.find().populate({ path: 'class', select: 'classname' }).lean();
 
-=======
-    const schedules = await ScheduleModel.find()
-        .populate('class', 'classname') // Populate lấy tên lớp từ collection 'classes'
-        .lean(); // Chuyển dữ liệu sang object để Handlebars đọc được
->>>>>>> 9e5be9f09055bf76bc938df4b1b28c33b5d7f736
 
     res.render('schedule/schedule_index', { 
         title: 'Lịch Học', 
@@ -40,7 +30,6 @@ router.get('/schedule-view/:weekOffset?', async (req, res) => {
 });
 
 // Hiển thị form tạo lịch học
-<<<<<<< HEAD
 router.get('/add', async (req, res) => {
     try {
         const classes = await ClassModel.find(); // Lấy danh sách tất cả lớp học
@@ -52,24 +41,13 @@ router.get('/add', async (req, res) => {
         console.error(err);
         res.status(500).send("Lỗi server");
     }
-=======
-router.get('/add', (req, res) => {
-    res.render('schedule/add_schedule', { title: 'Thêm Lịch Học' });
->>>>>>> 9e5be9f09055bf76bc938df4b1b28c33b5d7f736
 });
 
 
 router.post('/add', async (req, res) => {
     try {
-<<<<<<< HEAD
         const { day, time, class: classId } = req.body;
         const classObj = await ClassModel.findById(classId);
-=======
-        const { day, time, classname } = req.body;
-
-        // Tìm lớp học theo tên
-        const classObj = await ClassModel.findOne({ name: classname });
->>>>>>> 9e5be9f09055bf76bc938df4b1b28c33b5d7f736
 
         if (!classObj) {
             return res.status(400).send("Lớp học không tồn tại.");
@@ -89,11 +67,7 @@ router.post('/add', async (req, res) => {
         const newSchedule = new ScheduleModel({
             day,
             time,
-<<<<<<< HEAD
             class: classObj._id
-=======
-            class: classObj._id,
->>>>>>> 9e5be9f09055bf76bc938df4b1b28c33b5d7f736
         });
 
         await newSchedule.save();
@@ -103,18 +77,13 @@ router.post('/add', async (req, res) => {
         const message = `Lịch học mới đã được tạo:\nNgày: ${day}\nCa học: ${time}\n Các bạn chú ý kiểm tra lịch học mới`;
         await sendEmail(emailList, subject, message);
         
-<<<<<<< HEAD
         res.redirect('/schedule/schedule-view/');
-=======
-        res.redirect('/schedule/schedule-view/0');
->>>>>>> 9e5be9f09055bf76bc938df4b1b28c33b5d7f736
     } catch (err) {
         console.error(err);
         res.status(500).send("Lỗi khi thêm lịch học.");
     }
 });
 
-<<<<<<< HEAD
 router.get('/edit/:id', async (req, res) => {
     try {
         const schedule = await ScheduleModel.findById(req.params.id)
@@ -189,6 +158,4 @@ router.get('/delete/:id', async (req, res) => {
     res.redirect('/schedule/schedule-view/');
  })
 
-=======
->>>>>>> 9e5be9f09055bf76bc938df4b1b28c33b5d7f736
 module.exports = router;
