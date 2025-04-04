@@ -86,6 +86,9 @@ hbs.registerHelper('formatDate', function(date) {
       year: 'numeric'
   });
 });
+hbs.registerHelper('json', function(context) {
+  return JSON.stringify(context);
+});
 
 // 🛡 Cấu hình session & Passport
 app.use(session({
@@ -148,6 +151,7 @@ app.use((err, req, res, next) => {
   res.status(err.status || 400);
   res.render('error');
 });
+
 
 // 🚀 **Chạy server**
 httpServer.listen(3001, () => {
