@@ -17,13 +17,13 @@ const documentSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
+  documentFile: {
+    type: String,
+    required: false
   },
   comments: [
     {
-        user: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' }, 
+        user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, 
         username: String, 
         text: String, 
         createdAt: { type: Date, default: Date.now } 

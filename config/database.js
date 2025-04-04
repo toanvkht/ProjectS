@@ -4,10 +4,8 @@ var uri = "mongodb+srv://TestProject123456:123@cluster0.zbmtc.mongodb.net/?retry
 
 mongoose.set('strictQuery', true);
 mongoose.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 })
-    .then(() => console.log('✅ Connected to MongoDB'))
-    .catch(err => console.log('❌ MongoDB connection error:', err));
-
-
+.then(() => console.log('✅ Connected to MongoDB'))
+.catch(err => console.log('❌ MongoDB connection error:', err));
