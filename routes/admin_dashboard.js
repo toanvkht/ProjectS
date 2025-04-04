@@ -1,12 +1,20 @@
 const express = require('express');
 const router = express.Router();
+<<<<<<< HEAD
 var ClassModel = require('../models/Class');
+=======
+const socketIo = require("socket.io");
+const http = require("http");
+const server = http.createServer(express);
+const io = socketIo(server);
+>>>>>>> 9e5be9f09055bf76bc938df4b1b28c33b5d7f736
 var StudentModel = require('../models/Student');
 var TutorModel = require('../models/Tutor');
 
 
 router.get('/', async (req, res) => {
     // Chạy hai truy vấn song song để tối ưu hiệu suất
+<<<<<<< HEAD
     const [students, tutors, classes] = await Promise.all([
         StudentModel.find({}, 'name telephone email subject enrollmentYear'),
         TutorModel.find({}, 'name email telephone department'),   
@@ -19,10 +27,19 @@ router.get('/', async (req, res) => {
     // Lấy danh sách sinh viên chưa có lớp
     const unassignedStudents = await StudentModel.find({ _id: { $nin: assignedStudentIds } });
 
+=======
+    const [students, tutors, studentsWithoutTutor] = await Promise.all([
+        StudentModel.find({}, 'name subject'),
+        TutorModel.find({}, 'name department'),  
+        StudentModel.find({tutor: { $in: [null, undefined] }}, 'name subject'),  
+    ]);
+
+>>>>>>> 9e5be9f09055bf76bc938df4b1b28c33b5d7f736
     // Render trang với tất cả dữ liệu cần thiết
     res.render('dashboard/index', {
         students,
         tutors,
+<<<<<<< HEAD
         totalStudents: students.length,
         totalTutors: tutors.length,
         unassignedStudents
@@ -73,6 +90,15 @@ router.post('/add-tutor', async (req, res) => {
     res.redirect('/admin/dashboard'); 
 });
 
+=======
+        studentsWithoutTutor,
+        totalStudents: students.length,
+        totalTutors: tutors.length,
+        totalStudentsWithoutTutor: studentsWithoutTutor.length
+    });  
+});
+
+>>>>>>> 9e5be9f09055bf76bc938df4b1b28c33b5d7f736
 router.get('/student-edit/:id', async (req, res) => {
     var id = req.params.id;
     var student = await StudentModel.findById(id);
@@ -93,6 +119,7 @@ router.get('/student-edit/:id', async (req, res) => {
     res.redirect('/admin/dashboard');
  });
 
+<<<<<<< HEAD
 
 // Lấy danh sách sinh viên chưa có lớp
 router.get('/unassigned', async (req, res) => {
@@ -107,13 +134,48 @@ router.get('/unassigned', async (req, res) => {
         res.render('dashboard/index', { unassignedStudents });
     } catch (error) {
         res.status(500).send("Lỗi khi lấy danh sách sinh viên chưa có lớp.");
+=======
+ router.get('/filter', async (req, res) => {
+    try {
+        const { subject } = req.query; 
+
+        if (!subject) {
+            return res.status(400).send("Vui lòng chọn môn học.");
+        }
+        
+        const teachers = await TutorModel.find({ department: subject });
+
+        // console.log("Tutors found:", teachers);
+
+        res.render('dashboard/index', { teachers, subject });
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Lỗi khi lấy danh sách giáo viên.');
+>>>>>>> 9e5be9f09055bf76bc938df4b1b28c33b5d7f736
     }
 });
 
 
+<<<<<<< HEAD
 
 
 
 
+=======
+ // Đang tham khảo - không động vào
+//  router.post('/add-student', async (req, res) => {
+//     const { name } = req.body;
+//     if (!name) return res.status(400).send('Tên không được để trống');
+
+//     const newStudent = new StudentModel({ name });
+//     await newStudent.save();
+
+//     // Gửi sự kiện cập nhật danh sách sinh viên cho tất cả client
+//     io.emit('studentAdded', { name });
+
+//     res.redirect('/admin/dashboard');
+// });
+>>>>>>> 9e5be9f09055bf76bc938df4b1b28c33b5d7f736
 
 module.exports = router;

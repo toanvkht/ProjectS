@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <h2>Thêm sinh viên mới</h2>
 <form action="/admin/dashboard/add-student" method="POST">
     <label for="">Student Name</label>
@@ -16,6 +17,9 @@
 </form>
 
 <h2>Danh sách sinh viên</h2>
+=======
+<h1>Danh sách sinh viên</h1>
+>>>>>>> 9e5be9f09055bf76bc938df4b1b28c33b5d7f736
 <h2>Tổng số sinh viên: <span id="total">{{totalStudents}}</span></h2>
 
 <div class="table-wrapper">
@@ -23,8 +27,11 @@
         <thead>
             <tr>
                 <th>Student name</th>
+<<<<<<< HEAD
                 <th>Telephone</th>
                 <th>Email</th>
+=======
+>>>>>>> 9e5be9f09055bf76bc938df4b1b28c33b5d7f736
                 <th>Subject</th>
             </tr>
         </thead>
@@ -32,8 +39,11 @@
             {{#each students }}
             <tr>
                 <td>{{ name }}</td>
+<<<<<<< HEAD
                 <td>{{ telephone }}</td>
                 <td>{{ email }}</td>
+=======
+>>>>>>> 9e5be9f09055bf76bc938df4b1b28c33b5d7f736
                 <td>{{ subject }}</td>
                 <td>
                     <a class="button-3" href="/admin/dashboard/student-edit/{{ _id }}">Edit</a>
@@ -44,6 +54,7 @@
     </table>
 </div>
 
+<<<<<<< HEAD
 <h2>Thêm giảng viên mới</h2>
 <form action="/admin/dashboard/add-tutor" method="POST">
     <label for="">Tutor Name</label>
@@ -62,6 +73,9 @@
 </form>
 
 <h2>Danh sách giảng viên</h2>
+=======
+<h1>Danh sách giảng viên</h1>
+>>>>>>> 9e5be9f09055bf76bc938df4b1b28c33b5d7f736
 <h2>Tổng số giảng viên: <span id="total">{{totalTutors}}</span></h2>
 
 <div class="table-wrapper">
@@ -69,8 +83,11 @@
         <thead>
             <tr>
                 <th>Tutor name</th>
+<<<<<<< HEAD
                 <th>Email</th>
                 <th>Telephone</th>              
+=======
+>>>>>>> 9e5be9f09055bf76bc938df4b1b28c33b5d7f736
                 <th>Department</th>
             </tr>
         </thead>
@@ -78,8 +95,11 @@
             {{#each tutors }}
             <tr>
                 <td>{{ name }}</td>
+<<<<<<< HEAD
                 <td>{{ email }}</td>
                 <td>{{ telephone }}</td>
+=======
+>>>>>>> 9e5be9f09055bf76bc938df4b1b28c33b5d7f736
                 <td>{{ department }}</td>
                 {{!-- <td>
                     <a class="button-3" href="/admin/dashboard/student-edit/{{ _id }}">Edit</a>
@@ -90,6 +110,7 @@
     </table>
 </div>
 
+<<<<<<< HEAD
 <h2>Danh sách sinh viên chưa có lớp</h2>
 <ul>
     {{#each unassignedStudents}}
@@ -137,3 +158,40 @@
         totalElement.textContent = parseInt(totalElement.textContent) + 1;
     });
 </script>
+=======
+<h2>Danh sách sinh viên chưa có Tutor</h2>
+<h2>Tổng số sinh viên chưa có tutor: <span id="totalWithoutTutor">{{totalStudentsWithoutTutor}}</span></h2>
+<ul>
+    {{#if studentsWithoutTutor.length}}
+    <ul>
+        {{#each studentsWithoutTutor}}
+            <li>{{this.name}} - {{this.subject}}</li>
+        {{/each}}
+    </ul>
+    {{else}}
+    <p>Không có sinh viên nào chưa có tutor.</p>
+    {{/if}}
+</ul>
+
+<h2>Danh sách giáo viên</h2>
+
+<!-- Form lọc theo môn học -->
+<form action="/admin/dashboard/filter" method="GET">
+    <label for="subject">Chọn môn học:</label>
+    <select name="subject" required>
+        <option value="Mathematics">Mathematics</option>
+        <option value="Physics">Physics</option>
+    </select>
+    <button type="submit">Lọc</button>
+</form>
+
+<p>Tổng số giáo viên: {{teachers.length}}</p>
+
+<ul>
+    {{#each teachers}}
+        <li>
+            {{this.name}}</a> - Môn học: {{this.department}}
+        </li>
+    {{/each}}
+</ul> 
+>>>>>>> 9e5be9f09055bf76bc938df4b1b28c33b5d7f736
