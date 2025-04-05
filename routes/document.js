@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Document = require('../models/Document');
 
-
-
 // Hiển thị trang quản lý tài liệu
 router.get('/', async (req, res) => {
   try {
