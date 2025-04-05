@@ -6,7 +6,8 @@ const documentSchema = new mongoose.Schema({
     required: true
   },
   author: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId, ref: 'User', 
+    ref: 'User',
     required: true
   },
   content: {

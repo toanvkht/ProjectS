@@ -30,7 +30,7 @@ const upload = multer({
 // Hiển thị trang quản lý tài liệu
 router.get('/', async (req, res) => {
   try {
-    const documents = await Document.find(); // Lấy tất cả tài liệu từ database
+    const documents = await Document.find().populate('author', 'fullname');
     res.render('document/index', { title: 'Quản lý tài liệu', documents });
   } catch (err) {
     console.error(err);
@@ -50,7 +50,7 @@ router.post('/add', upload.single('documentFile'), async (req, res) => {
 
   const newDocument = new Document({ 
       title, 
-      author, 
+      author: req.user._id, 
       content, 
       imageUrl: req.body.imageUrl, // nếu có ảnh
       documentFile // Thêm file tải lên
@@ -70,43 +70,46 @@ router.get('/search', async (req, res) => {
 // Edit document route
 router.get('/edit/:id', async (req, res) => {
   try {
-      const documentId = req.params.id;
-      const document = await Document.findById(documentId);
+    const documentId = req.params.id;
+    const document = await Document.findById(documentId).populate('author', 'fullname');
 
-      if (!document) {
-          return res.status(404).send('Document not found');
-      }
+    if (!document) {
+      return res.status(404).send('Document not found');
+    }
 
-      res.render('document/edit', { document });
+    res.render('document/edit', { document });
   } catch (error) {
-      console.error('Error fetching document:', error);
-      res.status(500).send('Internal Server Error');
+    console.error('Error fetching document:', error);
+    res.status(500).send('Internal Server Error');
   }
 });
 // Update document route
 router.post('/update/:id', upload.single('documentFile'), async (req, res) => {
   try {
-      const documentId = req.params.id;
-      const { title, author, content, imageUrl } = req.body;
+    const documentId = req.params.id;
+    const { title, content, imageUrl } = req.body;
 
-      // Nếu có file tải lên, lưu URL của file vào document
-      let documentFileUrl = null;
-      if (req.file) {
-          documentFileUrl = `/uploads/${req.file.filename}`;
-      }
+    let documentFileUrl = null;
+    if (req.file) {
+      documentFileUrl = `/uploads/${req.file.filename}`;
+    }
 
-      await Document.findByIdAndUpdate(documentId, {
-          title,
-          author,
-          content,
-          imageUrl,
-          documentFile: documentFileUrl // Cập nhật URL file
-      });
+    const updateData = {
+      title,
+      content,
+      imageUrl
+    };
 
-      res.redirect('/document'); // Redirect to document list page
+    if (documentFileUrl) {
+      updateData.documentFile = documentFileUrl;
+    }
+
+    await Document.findByIdAndUpdate(documentId, updateData);
+
+    res.redirect('/document');
   } catch (error) {
-      console.error('Error updating document:', error);
-      res.status(500).send('Internal Server Error');
+    console.error('Error updating document:', error);
+    res.status(500).send('Internal Server Error');
   }
 });
 
