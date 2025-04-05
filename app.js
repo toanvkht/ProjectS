@@ -118,11 +118,12 @@ const routes = {
   blog: require('./routes/blog'),
   admin_dashboard: require('./routes/admin_dashboard'),
   studentDashboard: require('./routes/studentDashboard'),
-  // tutor_dashboard: require('./routes/tutor_dashboard'),
+  tutor_dashboard: require('./routes/tutor_dashboard'),
   userpage: require('./routes/userpage'),
   class: require('./routes/class'),
   schedule: require('./routes/schedule'),
-  tutor: require('./routes/tutor') 
+  tutor: require('./routes/tutor'),
+  attendance: require('./routes/attendance')
 };
 
 
@@ -136,10 +137,13 @@ app.use('/meeting', routes.meeting);
 app.use('/document', routes.document);
 app.use('/blog', routes.blog);
 app.use('/admin/dashboard', routes.admin_dashboard);
+app.use('/dashboard', routes.tutor_dashboard);
 app.use('/dashboard', routes.studentDashboard);
 app.use('/userpage', routes.userpage);
 app.use('/class', routes.class);
 app.use('/schedule', routes.schedule);
+app.use('/attendance', routes.attendance);
+
 
 // ❌ Xử lý lỗi 404
 app.use((req, res, next) => next(createError(404)));
