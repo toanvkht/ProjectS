@@ -144,7 +144,7 @@ app.use('/dashboard', routes.studentDashboard);
 app.use('/userpage', routes.userpage);
 app.use('/class', routes.class);
 app.use('/schedule', routes.schedule);
-app.use('/attendance', routes.attandance);
+app.use('/attendance', routes.attendance);
 
 // const onlineUsers = {};
 
